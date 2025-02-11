@@ -1,5 +1,7 @@
+import PredictorGPT from "@/components/DashboardContents/PredictorGPT";
+
 const Predictator = () => {
-  return <div>This is predictor</div>;
+  return <PredictorGPT />;
 };
 
 export default Predictator;
