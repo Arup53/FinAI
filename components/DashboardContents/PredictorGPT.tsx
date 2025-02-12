@@ -2,13 +2,61 @@
 
 import axios from "axios";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+interface TickerData {
+  [symbol: string]: number;
+}
 
 const PredictorGPT = () => {
   // Array to hold all messages (both user and assistant)
+  // State to hold ticker data from the WebSocket
+  const [tickerData, setTickerData] = useState<TickerData>({});
+  // State to show the connection status of the WebSocket
+  const [wsStatus, setWsStatus] = useState("Connecting...");
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Create a WebSocket connection to your backend
+    const ws = new WebSocket("ws://localhost:3000");
+
+    ws.onopen = () => {
+      console.log("WebSocket connected");
+      setWsStatus("Connected");
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        // The backend sends an initial message with a "message" key
+        if (data.message) {
+          console.log("Server:", data.message);
+        } else if (data.symbol && data.price) {
+          // Update the ticker data state for a given symbol
+          setTickerData((prev) => ({ ...prev, [data.symbol]: data.price }));
+        }
+      } catch (error) {
+        console.error("Error parsing WebSocket message:", error);
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket closed");
+      setWsStatus("Disconnected. Attempting reconnect...");
+      // Optionally: implement reconnection logic here
+    };
+
+    // Clean up when the component unmounts
+    return () => {
+      ws.close();
+    };
+  }, []);
 
   // Function to send the user's message and fetch the assistant's response
   const handleSend = async () => {
@@ -52,56 +100,70 @@ const PredictorGPT = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.header}>Get AI Market Insight</h2>
+    <>
+      <section style={{ marginBottom: "2rem" }}>
+        <h2>Live Ticker</h2>
+        <p>Status: {wsStatus}</p>
+        <ul>
+          {Object.entries(tickerData).map(([symbol, price]) => (
+            <li key={symbol}>
+              <strong>{symbol.toUpperCase()}</strong>: ${price}
+            </li>
+          ))}
+        </ul>
+      </section>
+      <div style={styles.container}>
+        <h2 style={styles.header}>Get AI Market Insight</h2>
 
-      {/* Chat Window */}
-      <div style={styles.chatWindow}>
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            style={{
-              ...styles.messageRow,
-              justifyContent: msg.sender === "user" ? "flex-end" : "flex-start",
-            }}
-          >
+        {/* Chat Window */}
+        <div style={styles.chatWindow}>
+          {messages.map((msg, index) => (
             <div
+              key={index}
               style={{
-                ...styles.messageBubble,
-                background: msg.sender === "user" ? "#007aff" : "#e5e5ea",
-                color: msg.sender === "user" ? "#fff" : "#000",
+                ...styles.messageRow,
+                justifyContent:
+                  msg.sender === "user" ? "flex-end" : "flex-start",
               }}
             >
-              {msg.text}
+              <div
+                style={{
+                  ...styles.messageBubble,
+                  background: msg.sender === "user" ? "#007aff" : "#e5e5ea",
+                  color: msg.sender === "user" ? "#fff" : "#000",
+                }}
+              >
+                {msg.text}
+              </div>
             </div>
-          </div>
-        ))}
-        {loading && (
-          <div style={styles.loading}>
-            <p>Loading...</p>
-          </div>
-        )}
-      </div>
+          ))}
+          {loading && (
+            <div style={styles.loading}>
+              <p>Loading...</p>
+            </div>
+          )}
+        </div>
 
-      {/* Input Area */}
-      <div style={styles.inputContainer}>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your message..."
-          style={styles.inputField}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              handleSend();
-            }
-          }}
-        />
-        <button onClick={handleSend} style={styles.sendButton}>
-          Send
-        </button>
+        {/* Input Area */}
+        <div style={styles.inputContainer}>
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your message..."
+            style={styles.inputField}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                handleSend();
+              }
+            }}
+          />
+          <button onClick={handleSend} style={styles.sendButton}>
+            Send
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
