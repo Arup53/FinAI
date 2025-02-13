@@ -7,7 +7,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`flex flex-col gap-2 h-[100vh] border-r   ${
+      className={`flex flex-col gap-2 h-[100vh] border-r  ${
         !hidden ? "w-[15%]" : "w-[8%]"
       }`}
     >

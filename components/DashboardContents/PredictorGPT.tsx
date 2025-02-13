@@ -1,17 +1,15 @@
 "use client";
 
 import axios from "axios";
-import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
 
-interface TickerData {
-  [symbol: string]: number;
-}
+import { useEffect, useState } from "react";
+import Ticker, { FinancialTicker } from "nice-react-ticker";
 
 const PredictorGPT = () => {
   // Array to hold all messages (both user and assistant)
   // State to hold ticker data from the WebSocket
-  const [tickerData, setTickerData] = useState<TickerData>({});
+
+  const [tickerData, setTickerData] = useState({});
   // State to show the connection status of the WebSocket
   const [wsStatus, setWsStatus] = useState("Connecting...");
   const [messages, setMessages] = useState([]);
@@ -19,7 +17,6 @@ const PredictorGPT = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Create a WebSocket connection to your backend
     const ws = new WebSocket("ws://localhost:3000");
 
     ws.onopen = () => {
@@ -30,12 +27,22 @@ const PredictorGPT = () => {
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        // The backend sends an initial message with a "message" key
         if (data.message) {
           console.log("Server:", data.message);
-        } else if (data.symbol && data.price) {
-          // Update the ticker data state for a given symbol
-          setTickerData((prev) => ({ ...prev, [data.symbol]: data.price }));
+        } else if (
+          data.symbol &&
+          data.price &&
+          data.priceChange &&
+          data.percentageChange
+        ) {
+          setTickerData((prev) => ({
+            ...prev,
+            [data.symbol]: {
+              price: data.price,
+              priceChange: data.priceChange,
+              percentageChange: data.percentageChange,
+            },
+          }));
         }
       } catch (error) {
         console.error("Error parsing WebSocket message:", error);
@@ -49,10 +56,8 @@ const PredictorGPT = () => {
     ws.onclose = () => {
       console.log("WebSocket closed");
       setWsStatus("Disconnected. Attempting reconnect...");
-      // Optionally: implement reconnection logic here
     };
 
-    // Clean up when the component unmounts
     return () => {
       ws.close();
     };
@@ -100,18 +105,35 @@ const PredictorGPT = () => {
   };
 
   return (
-    <>
-      <section style={{ marginBottom: "2rem" }}>
-        <h2>Live Ticker</h2>
-        <p>Status: {wsStatus}</p>
-        <ul>
-          {Object.entries(tickerData).map(([symbol, price]) => (
-            <li key={symbol}>
-              <strong>{symbol.toUpperCase()}</strong>: ${price}
-            </li>
-          ))}
-        </ul>
-      </section>
+    <div>
+      <div>
+        <section
+          style={{
+            marginBottom: "2rem",
+            maxWidth: "600px",
+            margin: "0 auto",
+            overflow: "hidden", // Important!
+          }}
+        >
+          <h2>Live Ticker</h2>
+          <p>Status: {wsStatus}</p>
+          <Ticker style={{ height: "80px" }}>
+            {Object.entries(tickerData).map(
+              ([symbol, { price, priceChange, percentageChange }]) => (
+                <FinancialTicker
+                  id={symbol}
+                  key={symbol}
+                  symbol={symbol}
+                  lastPrice={price}
+                  currentPrice={priceChange}
+                  percentage={percentageChange}
+                  change={parseFloat(priceChange) >= 0}
+                />
+              )
+            )}
+          </Ticker>
+        </section>
+      </div>
       <div style={styles.container}>
         <h2 style={styles.header}>Get AI Market Insight</h2>
 
@@ -163,7 +185,7 @@ const PredictorGPT = () => {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
