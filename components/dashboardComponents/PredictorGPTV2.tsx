@@ -36,23 +36,20 @@ const PredictatorV2 = () => {
       isUser: true,
     };
 
-    // const response = await axios.post(
-    //   "http://localhost:3000/chatRag",
-    //   {
-    //     test: "test",
-    //   },
-    //   {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // );
-    // console.log(response);
+    const response = await axios.post(
+      "http://localhost:3000/user",
+      { input },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     // Simulate AI response
     const aiResponse: Message = {
       id: messages.length + 2,
-      content: `How u doin`,
+      content: `${response.data.result.output}`,
       isUser: false,
     };
 
