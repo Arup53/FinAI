@@ -12,6 +12,7 @@ interface Message {
 
 const PredictatorV2 = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { id: 1, content: "Hello! How can I help you today?", isUser: false },
   ]);
@@ -26,6 +27,7 @@ const PredictatorV2 = () => {
   }, [messages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
     if (!input.trim()) return;
 
@@ -55,10 +57,11 @@ const PredictatorV2 = () => {
 
     setMessages([...messages, userMessage, aiResponse]);
     setInput("");
+    setLoading(false);
   };
 
   return (
-    <div className="flex  w-[60vw]  bg-gray-100 border border-gray-300 ">
+    <div className="flex  w-[60vw]  bg-gray-100 border border-gray-300">
       {/* Main Content */}
       <div className="flex-1 flex flex-col h-[50vh] relative">
         {/* Mobile Header */}
@@ -72,6 +75,7 @@ const PredictatorV2 = () => {
         </div>
 
         {/* Messages */}
+
         <div
           ref={containerRef}
           className="flex-1 overflow-y-auto p-4 space-y-6"
@@ -96,6 +100,17 @@ const PredictatorV2 = () => {
             </div>
           ))}
         </div>
+
+        {loading && (
+          <div className="flex items-start gap-4 bg-gray-50 p-6 rounded-lg">
+            <div className="p-2 rounded-full bg-black text-white">
+              <Bot size={20} />
+            </div>
+            <div className="flex-1">
+              <p className="text-gray-800">Thinking...</p>
+            </div>
+          </div>
+        )}
 
         {/* Input Form */}
         <div className="border-t bg-white p-4">
