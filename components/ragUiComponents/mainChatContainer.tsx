@@ -14,7 +14,7 @@ const MainChatUi = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { id: 1, content: "Hello! How can I help you today?", isUser: false },
+    { id: 1, content: "Hello! Ask query on your provided URL", isUser: false },
   ]);
   const [input, setInput] = useState("");
   const [showSidebar, setShowSidebar] = useState(false);
@@ -41,7 +41,7 @@ const MainChatUi = () => {
     const response = await axios.post(
       "http://localhost:3000/chatRag",
       {
-        test: "test",
+        query: input,
       },
       {
         headers: {
@@ -65,33 +65,6 @@ const MainChatUi = () => {
 
   return (
     <div className="flex  w-[60vw]  bg-gray-100 border border-gray-300">
-      {/* Sidebar */}
-      {/* <div
-        className={`fixed md:static inset-y-0 left-0 transform ${
-          showSidebar ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition duration-200 ease-in-out bg-gray-900 text-white w-64 p-4 z-20`}
-      >
-        <button className="flex items-center gap-2 w-full p-3 rounded-lg hover:bg-gray-800 transition-colors">
-          <MessagesSquare size={20} />
-          <span>New Chat</span>
-        </button>
-        <div className="mt-4 border-t border-gray-700 pt-4">
-          <h2 className="text-sm font-semibold text-gray-400 mb-2">
-            Recent chats
-          </h2>
-          <div className="space-y-2">
-            {["Previous Chat 1", "Previous Chat 2"].map((chat, index) => (
-              <button
-                key={index}
-                className="w-full text-left p-2 rounded hover:bg-gray-800 transition-colors"
-              >
-                {chat}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div> */}
-
       {/* Main Content */}
       <div className="flex-1 flex flex-col h-[75vh] relative">
         {/* Mobile Header */}
