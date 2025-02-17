@@ -1,4 +1,4 @@
-import PredictorGPT from "@/components/DashboardContents/PredictorGPT";
+import PredictorGPT from "@/components/dashboardComponents/PredictorGPT";
 
 const Predictator = () => {
   return <PredictorGPT />;
