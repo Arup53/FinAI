@@ -61,9 +61,9 @@ const PredictatorV2 = () => {
   };
 
   return (
-    <div className="flex  w-[60vw]  bg-gray-100 border border-gray-300">
+    <div className="flex  w-[60vw]  bg-gray-100 border border-gray-300 ">
       {/* Main Content */}
-      <div className="flex-1 flex flex-col h-[75vh] relative">
+      <div className="flex-1 flex flex-col h-[50vh] relative">
         {/* Mobile Header */}
         <div className="md:hidden bg-white border-b p-4 flex items-center">
           <button
