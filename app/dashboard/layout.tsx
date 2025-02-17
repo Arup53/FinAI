@@ -1,21 +1,11 @@
-"use client";
+import DashboardContent from "@/components/dashboardComponents/dashboardContent";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
-import Navbar from "@/components/DashboardContents/Navbar";
-import Sidebar from "@/components/DashboardContents/Sidebar";
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div>
-      <Navbar />
-      <div className="flex">
-        {/* <Sidebar /> */}
-        <Sidebar />
-        <main className="flex-1">{children}</main>
-      </div>
-    </div>
+    <SidebarProvider>
+      <DashboardContent />
+      <main>{children}</main>
+    </SidebarProvider>
   );
 }
