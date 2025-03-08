@@ -39,7 +39,7 @@ const MainChatUi = () => {
     };
 
     const response = await axios.post(
-      "http://localhost:3000/chatRag",
+      "http://localhost:3000/ragChat",
       {
         query: input,
       },
