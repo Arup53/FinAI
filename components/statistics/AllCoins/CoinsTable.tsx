@@ -101,7 +101,7 @@ const CoinsTable = ({ coins, loading }) => {
 
   const handleClick = (symbol, coinInfo) => {
     const data = JSON.stringify(coinInfo); // Convert object to string
-    router.push(`/coin/${symbol}?data=${encodeURIComponent(data)}`); // Encode to handle special characters
+    router.push(`/dashboard/coin/${symbol}?data=${encodeURIComponent(data)}`); // Encode to handle special characters
   };
   console.log(coins);
   return (
