@@ -20,6 +20,11 @@ const items = [
     icon: Home,
   },
   {
+    title: "Live",
+    url: "/dashboard/live",
+    icon: Home,
+  },
+  {
     title: "Predictor",
     url: "/dashboard/predictor",
     icon: Inbox,
