@@ -6,32 +6,29 @@ import MarketCap from "./marketCap/MarketCap";
 import CardTrending from "./trending/Card_Trending";
 
 const Stats = () => {
-  const [trending, setTrending] = useState([]);
+  const [trendingCoins, setTrendingCoins] = useState([]);
+  const [marketCapital, setMarketCapital] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get("http://localhost:3000/marketStats", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-  // useEffect(() => {
-  //   // Function to fetch historical candlestick data from Binance API.
-  //   const fetchData = async () => {
-  //     const res = await axios.get(
-  //       "https://api.coingecko.com/api/v3/search/trending",
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-  //     const newArr = res.data.coins.slice(0, 3);
+      setTrendingCoins(res.data.trending);
+      setMarketCapital(res.data.marketCap);
+    };
 
-  //     setTrending(newArr);
-  //   };
+    fetchData();
+  }, []);
 
-  //   fetchData();
-  // }, []);
+  console.log(trendingCoins, marketCapital);
 
-  console.log(trending);
   return (
     <div className="flex gap-2">
-      {trending.length > 0 && <CardTrending trending={trending} />}
-      <MarketCap />
+      {trendingCoins.length > 0 && <CardTrending trending={trendingCoins} />}
+      {/* <MarketCap /> */}
     </div>
   );
 };

@@ -10,7 +10,7 @@ const CardTrending = ({ trending }) => {
       </CardHeader>
       <CardContent className="flex flex-col gap-4 justify-between">
         {trending?.map((data) => (
-          <TrendingData key={data?.item.id} data={data} />
+          <TrendingData key={data?.id} data={data} />
         ))}
       </CardContent>
     </Card>
