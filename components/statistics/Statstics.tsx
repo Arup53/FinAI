@@ -28,7 +28,7 @@ const Stats = () => {
   return (
     <div className="flex gap-2">
       {trendingCoins.length > 0 && <CardTrending trending={trendingCoins} />}
-      {/* <MarketCap /> */}
+      <MarketCap marketCap={marketCapital} />
     </div>
   );
 };
