@@ -26,7 +26,7 @@ const Stats = () => {
   console.log(trendingCoins, marketCapital);
 
   return (
-    <div className="flex gap-2">
+    <div className="flex justify-center gap-2">
       {trendingCoins.length > 0 && <CardTrending trending={trendingCoins} />}
       <MarketCap marketCap={marketCapital} />
     </div>
