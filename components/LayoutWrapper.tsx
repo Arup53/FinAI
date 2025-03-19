@@ -2,7 +2,6 @@
 
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/navbar/Navbar";
-import Footer from "@/components/footer/page";
 
 export default function LayoutWrapper({
   children,

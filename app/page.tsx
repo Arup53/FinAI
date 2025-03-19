@@ -9,6 +9,8 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 import Banner from "@/components/Banner/page";
 import Footer from "@/components/footer/page";
+import Features from "@/components/features/page";
+import GetStarted from "@/components/getStarted/page";
 
 export default function Home() {
   const heroRef = useRef(null);
@@ -32,9 +34,11 @@ export default function Home() {
       <section ref={heroRef}>
         <Banner />
       </section>
-      <section ref={nextPageRef} className="bg-white h-[100vh]">
-        <div className="text-black">koi</div>
+      <section ref={nextPageRef} className="bg-white h-[100vh] border-2 ">
+        <Features />
       </section>
+      <section className="bg-white h-[100vh] border-2 "></section>
+
       <section>
         <Footer />
       </section>
