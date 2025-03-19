@@ -16,7 +16,6 @@ export default function LayoutWrapper({
     <>
       {!isDashboard && <Navbar />}
       <main className="min-h-[400px]">{children}</main>
-      {!isDashboard && <Footer />}
     </>
   );
 }

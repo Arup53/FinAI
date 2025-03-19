@@ -8,7 +8,7 @@ const handleGetStarted = () => {
 
 export default function Banner() {
   return (
-    <section className="flex flex-col items-center justify-center text-center min-h-screen bg-white">
+    <section className="flex flex-col items-center justify-center text-center min-h-screen bg-black">
       <h1 className="text-5xl font-bold text-gray-900">
         Simplify Investments <br />
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">
