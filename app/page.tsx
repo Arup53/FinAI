@@ -37,8 +37,9 @@ export default function Home() {
       <section ref={nextPageRef} className="bg-white h-[100vh] border-2 ">
         <Features />
       </section>
-      <section className="bg-white h-[100vh] border-2 "></section>
-
+      <section className="bg-white h-[100vh] border-2 ">
+        <GetStarted />
+      </section>
       <section>
         <Footer />
       </section>
