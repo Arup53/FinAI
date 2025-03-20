@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef } from "react";
 import { LogIn } from "lucide-react";
 import gsap from "gsap";
@@ -56,7 +58,7 @@ function HowToCard() {
 
 const GetStarted = () => {
   return (
-    <div className="px-4 py-16 bg-white rounded-3xl shadow-lg">
+    <div className="px-4 py-16 bg-white rounded-3xl shadow-lg h-full ">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
           How to Get Started
