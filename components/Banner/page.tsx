@@ -11,8 +11,8 @@ export default function Banner() {
   return (
     <section className="flex  justify-between items-center text-center min-h-screen bg-black px-48">
       <div className="flex flex-col justify-center items-center">
-        <h1 className="text-5xl font-bold text-white ">FinAI</h1>
-        <h3 className="text-5xl font-bold text-white ">
+        <h1 className="text-5xl font-bold text-white mt-4">FinAI</h1>
+        <h3 className="text-5xl font-bold text-white mt-4">
           Simplify Investments <br />
           with AI
         </h3>
